@@ -8,19 +8,24 @@ import EditForm from './Components/Form/EditForm';
 function App() {
     const [members, setMembers] = useState([])
     const [updateMember, setUpdateMember] = useState([])
+    const [updateIndex, setUpdateIndex] = useState(0)
     const [showEditForm, setShowEditForm] = useState(false)
     const getMember = member => {
         setMembers([...members, member])
     }
-    const editMember = (fieldMember, editIndex) => {
+    const editMember = (fieldMember, index) => {
         setShowEditForm(true)
-        setUpdateMember([...fieldMember])
+        setUpdateMember(fieldMember)
+        setUpdateIndex(index)
     }
-    
+    const changeFieldMember = changeMember => {
+        setMembers(members.map((member, index) => updateIndex === index ? changeMember : member))
+        setShowEditForm(false)
+    }
     const removeMember = removeIndex => {
         setMembers(members.filter((member, index) => removeIndex !== index))
     }
-    const cancleForm = status => {
+    const updateAndCancleForm = status => {
         setShowEditForm(status)
     }
     useEffect(() => {
@@ -40,7 +45,8 @@ function App() {
                 showEditForm ? 
                 <EditForm 
                     updateMember={updateMember}
-                    cancleForm={cancleForm}
+                    changeFieldMember={changeFieldMember}
+                    updateAndCancleForm={updateAndCancleForm}
                 />
                 :
                 <AddForm getMember={getMember} />

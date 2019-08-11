@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect } from 'react'
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
 
-function EditForm({ updateMember, cancleForm }){
-    const {firstName:newFirstName, lastName:newLastName, age:newAge} = updateMember[0]
+function EditForm({ updateMember, changeFieldMember, updateAndCancleForm }){
+    const { firstName:newFirstName, lastName:newLastName, age:newAge } = updateMember
     let firstName, lastName, age
     useEffect(() => {
         firstName.value = newFirstName
@@ -11,6 +11,11 @@ function EditForm({ updateMember, cancleForm }){
     })
     const handleSubmit = e => {
         e.preventDefault()
+        changeFieldMember({
+            firstName: firstName.value,
+            lastName: lastName.value,
+            age: age.value
+        })
     }
     return (
         <Fragment>
@@ -41,11 +46,12 @@ function EditForm({ updateMember, cancleForm }){
                         />
                     </FormGroup>
                 <Button 
+                    type='submit'
                     className='bg-primary mr-3 border-0'>Update member
                 </Button>
                 <Button 
                     className='bg-light text-dark'
-                    onClick={() => cancleForm(false)}>Cancle
+                    onClick={() => updateAndCancleForm(false)}>Cancle
                 </Button>
             </Form>
         </Fragment>
